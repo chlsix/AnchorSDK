@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AppDelegate.h"
+#import <UIKit/UIKit.h>
 #import "AnchorConfig.h"
 
 NS_ASSUME_NONNULL_BEGIN
