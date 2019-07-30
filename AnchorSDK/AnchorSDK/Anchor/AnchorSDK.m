@@ -7,114 +7,207 @@
 //
 
 #import "AnchorSDK.h"
+#import "WEEventManager.h"
+#import "AnchorUtil.h"
+
+static AnchorConfig *_defaultConfig;
+
 
 @implementation AnchorSDK
 
 + (void)initWithConfig:(AnchorConfig *)config application:(UIApplication *)application andLaunchOptions:(NSDictionary *)launchOptions {
-    
-    [AnchorSDK initFirebase];
-    [AnchorSDK initAppsFlyerWithConfig:config];
-    [AnchorSDK initFacebookWithApplication:application andLaunchOptions:launchOptions];
-    [AnchorSDK initUMengWithConfig:config];
+    _defaultConfig = config;
+    if (config.enableStatistics) {
+        if (config.enableFirebase) {
+            [AnchorSDK initFirebase];
+        }
+        if (config.enableAppsFlyer) {
+            [AnchorSDK initAppsFlyerWithConfig:config];
+        }
+        if (config.enableFacebook) {
+            [AnchorSDK initFacebookWithApplication:application andLaunchOptions:launchOptions];
+        }
+        if (config.enableUmeng) {
+            [AnchorSDK initUMengWithConfig:config];
+        }
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActiveNotificationHandle) name:UIApplicationDidBecomeActiveNotification object:nil];
+    }
+}
 
++ (void)didBecomeActiveNotificationHandle {
+    NSLog(@"====didBecomeActiveNotificationHandle==");
+    [AnchorSDK onApplicationDidBecomeActive];
+}
+
+/**
+ 上传deviceToken ，暂时未启用，未完成
+ 添加了远程推送功能时调用
+ */
++ (void)onDidRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
 }
 
 + (void)initFirebase {
-    Class firebaseClass = NSClassFromString(@"FIRApp");
-    if (firebaseClass) {
-        SEL configure = NSSelectorFromString(@"configure");
-        if ([firebaseClass respondsToSelector:configure]) {
-            IMP imp = [firebaseClass methodForSelector:configure];
-            void (*func)(id, SEL) = (void *)imp;
-            func(firebaseClass, configure);
-        }
-    }
+    [[WEEventManager shareManager] initFirebase];
 }
 
 + (void)initAppsFlyerWithConfig:(AnchorConfig *)config {
-    Class appsflyerClass = NSClassFromString(@"AppsFlyerTracker");
-    if (appsflyerClass) {
-        if (config.appKeyForAppsFlyer && config.appIdForAppsFlyer) {
-            SEL sharedTrackerSel = NSSelectorFromString(@"sharedTracker");
-            if ([appsflyerClass respondsToSelector:sharedTrackerSel]) {
-                IMP imp = [appsflyerClass methodForSelector:sharedTrackerSel];
-                Class (*func)(id, SEL) = (void *)imp;
-                Class sharedTracker = func(appsflyerClass, sharedTrackerSel);
-                SEL setAppsFlyerDevKey =  NSSelectorFromString(@"setAppsFlyerDevKey:");
-                if ([sharedTracker respondsToSelector:setAppsFlyerDevKey]) {
-                    IMP imp = [sharedTracker methodForSelector:setAppsFlyerDevKey];
-                    void (*func)(id, SEL, NSString *) = (void *)imp;
-                    func(sharedTracker, setAppsFlyerDevKey, config.appKeyForAppsFlyer);
-                }
-                SEL setAppleAppID =  NSSelectorFromString(@"setAppleAppID:");
-                if ([sharedTracker respondsToSelector:setAppleAppID]) {
-                    IMP imp = [sharedTracker methodForSelector:setAppleAppID];
-                    void (*func)(id, SEL, NSString *) = (void *)imp;
-                    func(sharedTracker, setAppleAppID, config.appIdForAppsFlyer);
-                }
-                
-#ifdef DEBUG
-                SEL setIsDebug =  NSSelectorFromString(@"setIsDebug:");
-                if ([sharedTracker respondsToSelector:setIsDebug]) {
-                    IMP imp = [sharedTracker methodForSelector:setIsDebug];
-                    void (*func)(id, SEL, BOOL) = (void *)imp;
-                    func(sharedTracker, setIsDebug, YES);
-                }
-#endif
-            }
-            
-        }
-        
-    }
+    [[WEEventManager shareManager] initAppsFlyerWithAppsFlyerDevKey:config.appKeyForAppsFlyer andAppleAppID:config.appIdForAppsFlyer];
 }
 
 + (void)initFacebookWithApplication:(UIApplication *)application andLaunchOptions:(NSDictionary *)launchOptions {
-    Class facebookClass = NSClassFromString(@"FBSDKApplicationDelegate");
-    if (facebookClass) {
-        SEL sharedInstanceSel = NSSelectorFromString(@"sharedInstance");
-        if ([facebookClass respondsToSelector:sharedInstanceSel]) {
-            IMP imp = [facebookClass methodForSelector:sharedInstanceSel];
-            Class (*func)(id, SEL) = (void *)imp;
-            Class sharedInstance = func(facebookClass, sharedInstanceSel);
-            SEL sel =  NSSelectorFromString(@"application:didFinishLaunchingWithOptions:");
-            if ([sharedInstance respondsToSelector:sel]) {
-                IMP imp = [sharedInstance methodForSelector:sel];
-                void (*func)(id, SEL, UIApplication *, NSDictionary *) = (void *)imp;
-                func(sharedInstance, sel, application, launchOptions);
-            }
-        }
-    }
+    [[WEEventManager shareManager] initFacebookWithApplication:application andLaunchOptions:launchOptions];
 }
 
 + (void)initUMengWithConfig:(AnchorConfig *)config {
-    Class umengClass = NSClassFromString(@"UMConfigure");
-    if (umengClass) {
-        if (config.appKeyForUmeng) {
-            SEL sel = NSSelectorFromString(@"initWithAppkey:channel:");
-            if ([umengClass respondsToSelector:sel]) {
-                IMP imp = [umengClass methodForSelector:sel];
-                void (*func)(id, SEL, NSString *, NSString *) = (void *)imp;
-                func(umengClass, sel, config.appKeyForAppsFlyer, @"AppStore");
-            }
-            Class mobClickClass = NSClassFromString(@"MobClick");
-            SEL setScenarioType =  NSSelectorFromString(@"setScenarioType:");
-            if ([mobClickClass respondsToSelector:setScenarioType]) {
-                IMP imp = [mobClickClass methodForSelector:setScenarioType];
-                void (*func)(id, SEL, NSUInteger) = (void *)imp;
-                func(mobClickClass, setScenarioType, 0);
-            }
-            
-#ifdef DEBUG
-            SEL setLogEnabled = NSSelectorFromString(@"setLogEnabled:");
-            if ([umengClass respondsToSelector:setLogEnabled]) {
-                IMP imp = [umengClass methodForSelector:setLogEnabled];
-                void (*func)(id, SEL, BOOL) = (void *)imp;
-                func(umengClass, setLogEnabled, YES);
-            }
-#endif
+    [[WEEventManager shareManager] initUMengWithAppkey:config.appKeyForUmeng andChannel:@"App Store" andScenarioType:0];
+}
+
++ (void)onApplicationDidBecomeActive {
+    if (_defaultConfig.enableStatistics) {
+        [[WEEventManager shareManager] activeTrack];
+        
+        //打开APP
+        [AnchorSDK reportCustomEvent:WE_APP_START];
+        
+        //首次打开
+        if ([AnchorUtil isFirstInstall]) {
+            [AnchorSDK reportCustomEvent:WE_FIRST_INSTALL];
         }
         
+        //是否越狱
+        NSString *isJailBreak =  [NSString stringWithFormat:@"%d", [AnchorUtil isJailBreak]];
+        NSLog(@"isJailBreak: %@", isJailBreak);
+        [AnchorSDK reportCustomEvent:WE_JUDGE andParams:@{@"description": @"1", @"result":isJailBreak}];
+        
+        ///获取设备设置时区与GMT之前的差值
+        NSString *seconds = [AnchorUtil secondsFromGMTForDate];
+        [AnchorSDK reportCustomEvent:WE_OFFSET_ACQUIRE andParams:@{@"value": seconds}];
     }
 }
+
++ (void)onHandleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    if (_defaultConfig.enableStatistics) {
+        [[WEEventManager shareManager] handleOpenURL:url sourceApplication:sourceApplication annotation:annotation];
+    }
+}
+
++ (BOOL)onApplication:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    BOOL handle = YES;
+    if (_defaultConfig.enableStatistics) {
+        handle = [[WEEventManager shareManager] application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+    }
+    return handle;
+}
+
++ (BOOL)onApplication:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    BOOL handle = YES;
+    if (_defaultConfig.enableStatistics) {
+        handle = [[WEEventManager shareManager] application:application openURL:url options:options];
+    }
+    return handle;
+}
+
++ (void)reportCustomEvent:(NSString *)eventName {
+    [[WEEventManager shareManager] trackEvent:eventName];
+}
+
++ (void)reportCustomEvent:(NSString *)eventName andParams:(NSDictionary *)eventParams {
+    [[WEEventManager shareManager] trackEvent:eventName value:eventParams];
+}
+
+
++ (void)reportSignUpSuccess:(NSString *)type {
+    [AnchorSDK reportCustomEvent:WE_SIGN_UP andParams:@{@"type": type, @"result": @"1", @"description": @"sign up success"}];
+}
+
++ (void)reportSignUpFailed:(NSString *)type description:(NSString *)description {
+    [AnchorSDK reportCustomEvent:WE_SIGN_UP andParams:@{@"type": type, @"result": @"0", @"description": description}];
+}
+
++ (void)reportLogInSuccess:(NSString *)type {
+    [AnchorSDK reportCustomEvent:WE_LOG_IN andParams:@{@"type": type, @"result": @"1", @"description": @"log in success"}];
+    
+}
+
++ (void)reportLogInFailed:(NSString *)type description:(NSString *)description {
+    [AnchorSDK reportCustomEvent:WE_LOG_IN andParams:@{@"type": type, @"result": @"0", @"description": description}];
+}
+
++ (void)reportLogOutSuccess:(NSString *)type {
+    [AnchorSDK reportCustomEvent:WE_LOG_OUT andParams:@{@"type": type, @"result": @"1", @"description": @"log out success"}];
+}
+
++ (void)reportLogOutFailed:(NSString *)type description:(NSString *)description {
+    [AnchorSDK reportCustomEvent:WE_LOG_OUT andParams:@{@"type": type, @"result": @"0", @"description": description}];
+
+}
+
++ (void)reportPurchaseRequest:(NSString *)productId value:(float)value target:(NSString *)target {
+    if (target == nil) {
+        target = @"";
+    }
+    [AnchorSDK reportCustomEvent:WE_PURCHASE_REQUEST andParams:@{@"item_id": productId, @"target": target, @"value": [NSString stringWithFormat:@"%f", value]}];
+}
+
++ (void)reportPurchaseSuccess:(NSString *)productId value:(float)value target:(NSString *)target {
+    if (target == nil) {
+        target = @"";
+    }
+    [AnchorSDK reportCustomEvent:WE_PURCHASE_SUCCESS andParams:@{@"item_id": productId, @"target": target, @"value": [NSString stringWithFormat:@"%f", value]}];
+}
+
++ (void)reportPurchaseCancel:(NSString *)productId value:(float)value target:(NSString *)target {
+    if (target == nil) {
+        target = @"";
+    }
+    [AnchorSDK reportCustomEvent:WE_PURCHASE_CANCEL andParams:@{@"item_id": productId, @"target": target, @"value": [NSString stringWithFormat:@"%f", value]}];
+}
+
++ (void)reportPurchaseFailed:(NSString *)productId value:(float)value target:(NSString *)target description:(NSString *)description {
+    if (target == nil) {
+        target = @"";
+    }
+    [AnchorSDK reportCustomEvent:WE_PURCHASE_FAILED andParams:@{
+                                                      @"item_id": productId,
+                                                      @"target": target,
+                                                      @"value": [NSString stringWithFormat:@"%f", value],
+                                                      @"description": description
+                                                      }];
+}
+
++ (void)reportSubRequest:(NSString *)productId value:(float)value target:(NSString *)target {
+    if (target == nil) {
+        target = @"";
+    }
+    [AnchorSDK reportCustomEvent:WE_SUB_REQUEST andParams:@{@"item_id": productId, @"target": target, @"value": [NSString stringWithFormat:@"%f", value]}];
+}
+
++ (void)reportSubSuccess:(NSString *)productId value:(float)value target:(NSString *)target {
+    if (target == nil) {
+        target = @"";
+    }
+    [AnchorSDK reportCustomEvent:WE_SUB_SUCCESS andParams:@{@"item_id": productId, @"target": target, @"value": [NSString stringWithFormat:@"%f", value]}];
+}
+
++ (void)reportSubCancel:(NSString *)productId value:(float)value target:(NSString *)target {
+    if (target == nil) {
+        target = @"";
+    }
+    [AnchorSDK reportCustomEvent:WE_SUB_CANCEL andParams:@{@"item_id": productId, @"target": target, @"value": [NSString stringWithFormat:@"%f", value]}];
+}
+
++ (void)reportSubFailed:(NSString *)productId value:(float)value target:(NSString *)target description:(NSString *)description {
+    if (target == nil) {
+        target = @"";
+    }
+    [AnchorSDK reportCustomEvent:WE_PURCHASE_FAILED andParams:@{
+                                                      @"item_id": productId,
+                                                      @"target": target,
+                                                      @"value": [NSString stringWithFormat:@"%f", value],
+                                                      @"description": description
+                                                      }];
+}
+
 
 @end

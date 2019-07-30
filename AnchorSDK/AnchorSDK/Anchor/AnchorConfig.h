@@ -12,6 +12,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AnchorConfig : NSObject
 
+//是否允许上报 默认为YES
+@property (nonatomic, assign) BOOL enableStatistics;
+//打开Firebase统计 默认为NO
+@property (nonatomic, assign) BOOL enableFirebase;
+//打开Facebook统计 默认为NO
+@property (nonatomic, assign) BOOL enableFacebook;
+//打开AppsFlyer统计 默认为NO
+@property (nonatomic, assign) BOOL enableAppsFlyer;
+//打开友盟统计 默认为NO
+@property (nonatomic, assign) BOOL enableUmeng;
+
 //AppsFlyer AppKey
 @property (nonatomic, strong) NSString *appKeyForAppsFlyer;
 //AppsFlyer AppId
