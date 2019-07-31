@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "AnchorConfig.h"
-#import "AnchorEventConst.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

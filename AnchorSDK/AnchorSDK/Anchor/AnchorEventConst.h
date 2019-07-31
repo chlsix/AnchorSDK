@@ -9,14 +9,12 @@
 #ifndef AnchorEventConst_h
 #define AnchorEventConst_h
 
-#pragma mark APP基础事件 未完成
+#pragma mark APP基础事件
 //w_app_start：打开APP
 #define WE_APP_START                        @"w_app_start"
 //w_first_install：首次打开
 #define WE_FIRST_INSTALL                    @"w_first_install"
-//w_token_acquire：获取推送token  未添加
-#define WE_TOKEN_ACQUIRE                    @"w_token_acquire"
-//w_engagement：使用时长  未添加
+//w_engagement：使用时长
 #define WE_ENGAGEMENT                       @"w_engagement"
 //w_judge： 判断用户是否root
 #define WE_JUDGE                            @"w_judge"

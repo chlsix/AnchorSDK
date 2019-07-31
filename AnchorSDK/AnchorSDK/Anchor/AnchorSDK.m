@@ -9,7 +9,9 @@
 #import "AnchorSDK.h"
 #import "WEEventManager.h"
 #import "AnchorUtil.h"
+#import "AnchorEventConst.h"
 #import "AnchorRemoteConfigManager.h"
+
 
 static AnchorConfig *_defaultConfig;
 
@@ -17,7 +19,11 @@ static AnchorConfig *_defaultConfig;
 @implementation AnchorSDK
 
 + (void)initWithConfig:(AnchorConfig *)config application:(UIApplication *)application andLaunchOptions:(NSDictionary *)launchOptions {
-    _defaultConfig = config;
+    if (config == nil) {
+        _defaultConfig = [[AnchorConfig alloc] init];
+    } else {
+        _defaultConfig = config;
+    }
     [[AnchorRemoteConfigManager sharedManager] initRemoteConfig];
    
     if (config.enableStatistics && [AnchorRemoteConfigManager remoteValueJudgeWithKey:WE_R_ANCHOR]) {
@@ -33,23 +39,10 @@ static AnchorConfig *_defaultConfig;
         if (config.enableUmeng && [AnchorRemoteConfigManager remoteValueJudgeWithKey:WE_R_UMENG]) {
             [AnchorSDK initUMengWithConfig:config];
         }
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActiveNotificationHandle) name:UIApplicationDidBecomeActiveNotification object:nil];
-        
     }
 }
 
-+ (void)didBecomeActiveNotificationHandle {
-    NSLog(@"====didBecomeActiveNotificationHandle==");
-    [AnchorSDK onApplicationDidBecomeActive];
-}
 
-/**
- 上传deviceToken ，暂时未启用，未完成
- 添加了远程推送功能时调用
- */
-+ (void)onDidRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    
-}
 
 + (void)initFirebase {
     [[WEEventManager shareManager] initFirebase];
@@ -67,28 +60,6 @@ static AnchorConfig *_defaultConfig;
     [[WEEventManager shareManager] initUMengWithAppkey:config.appKeyForUmeng andChannel:@"App Store" andScenarioType:0];
 }
 
-+ (void)onApplicationDidBecomeActive {
-    if (_defaultConfig.enableStatistics) {
-        [[WEEventManager shareManager] activeTrack];
-        
-        //打开APP
-        [AnchorSDK reportCustomEvent:WE_APP_START];
-        
-        //首次打开
-        if ([AnchorUtil isFirstInstall]) {
-            [AnchorSDK reportCustomEvent:WE_FIRST_INSTALL];
-        }
-        
-        //是否越狱
-        NSString *isJailBreak =  [NSString stringWithFormat:@"%d", [AnchorUtil isJailBreak]];
-        NSLog(@"isJailBreak: %@", isJailBreak);
-        [AnchorSDK reportCustomEvent:WE_JUDGE andParams:@{@"description": @"1", @"result":isJailBreak}];
-        
-        ///获取设备设置时区与GMT之前的差值
-        NSString *seconds = [AnchorUtil secondsFromGMTForDate];
-        [AnchorSDK reportCustomEvent:WE_OFFSET_ACQUIRE andParams:@{@"value": seconds}];
-    }
-}
 
 + (void)onHandleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     if (_defaultConfig.enableStatistics) {
