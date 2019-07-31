@@ -20,6 +20,7 @@
 		CE992CA122EF204A00F87102 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE992CA022EF204900F87102 /* GoogleService-Info.plist */; };
 		CEC132D222EFE9CA006D6B78 /* UIViewController+ScreenTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC132D122EFE9CA006D6B78 /* UIViewController+ScreenTracking.m */; };
 		CEC132D922F02528006D6B78 /* AnchorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC132D822F02528006D6B78 /* AnchorUtil.m */; };
+		CEC132DC22F04E02006D6B78 /* AnchorRemoteConfigManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC132DB22F04E02006D6B78 /* AnchorRemoteConfigManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,8 @@
 		CEC132D322F01E38006D6B78 /* AnchorEventConst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnchorEventConst.h; sourceTree = "<group>"; };
 		CEC132D722F02528006D6B78 /* AnchorUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnchorUtil.h; sourceTree = "<group>"; };
 		CEC132D822F02528006D6B78 /* AnchorUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnchorUtil.m; sourceTree = "<group>"; };
+		CEC132DA22F04E02006D6B78 /* AnchorRemoteConfigManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnchorRemoteConfigManager.h; sourceTree = "<group>"; };
+		CEC132DB22F04E02006D6B78 /* AnchorRemoteConfigManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnchorRemoteConfigManager.m; sourceTree = "<group>"; };
 		F59269113A2F00A75EA4BA0F /* Pods-AnchorSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnchorSDK.debug.xcconfig"; path = "Target Support Files/Pods-AnchorSDK/Pods-AnchorSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		F698E5F52E74318769D191E9 /* Pods_AnchorSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnchorSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -129,6 +132,8 @@
 				CEC132D322F01E38006D6B78 /* AnchorEventConst.h */,
 				CEC132D722F02528006D6B78 /* AnchorUtil.h */,
 				CEC132D822F02528006D6B78 /* AnchorUtil.m */,
+				CEC132DA22F04E02006D6B78 /* AnchorRemoteConfigManager.h */,
+				CEC132DB22F04E02006D6B78 /* AnchorRemoteConfigManager.m */,
 			);
 			path = Anchor;
 			sourceTree = "<group>";
@@ -255,6 +260,7 @@
 				CE992C6E22EF127C00F87102 /* main.m in Sources */,
 				CE992C7722EF141B00F87102 /* AnchorConfig.m in Sources */,
 				CE992C8022EF157600F87102 /* WEEventManager.m in Sources */,
+				CEC132DC22F04E02006D6B78 /* AnchorRemoteConfigManager.m in Sources */,
 				CE992C6022EF127B00F87102 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

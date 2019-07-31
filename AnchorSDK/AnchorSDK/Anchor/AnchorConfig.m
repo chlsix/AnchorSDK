@@ -9,10 +9,10 @@
 #import "AnchorConfig.h"
 
 static BOOL _enableStatistics = YES;
-static BOOL _enableFirebase = NO;
-static BOOL _enableFacebook = NO;
-static BOOL _enableAppsFlyer = NO;
-static BOOL _enableUmeng = NO;
+static BOOL _enableFirebase = YES;
+static BOOL _enableFacebook = YES;
+static BOOL _enableAppsFlyer = YES;
+static BOOL _enableUmeng = YES;
 
 @implementation AnchorConfig
 

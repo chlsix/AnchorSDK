@@ -9,6 +9,7 @@
 #import "AnchorSDK.h"
 #import "WEEventManager.h"
 #import "AnchorUtil.h"
+#import "AnchorRemoteConfigManager.h"
 
 static AnchorConfig *_defaultConfig;
 
@@ -17,20 +18,23 @@ static AnchorConfig *_defaultConfig;
 
 + (void)initWithConfig:(AnchorConfig *)config application:(UIApplication *)application andLaunchOptions:(NSDictionary *)launchOptions {
     _defaultConfig = config;
-    if (config.enableStatistics) {
-        if (config.enableFirebase) {
+    [[AnchorRemoteConfigManager sharedManager] initRemoteConfig];
+   
+    if (config.enableStatistics && [AnchorRemoteConfigManager remoteValueJudgeWithKey:WE_R_ANCHOR]) {
+        if (config.enableFirebase && [AnchorRemoteConfigManager remoteValueJudgeWithKey:WE_R_FIREBASE]) {
             [AnchorSDK initFirebase];
         }
-        if (config.enableAppsFlyer) {
+        if (config.enableAppsFlyer && [AnchorRemoteConfigManager remoteValueJudgeWithKey:WE_R_APPSFLYER]) {
             [AnchorSDK initAppsFlyerWithConfig:config];
         }
-        if (config.enableFacebook) {
+        if (config.enableFacebook && [AnchorRemoteConfigManager remoteValueJudgeWithKey:WE_R_FACEBOOK]) {
             [AnchorSDK initFacebookWithApplication:application andLaunchOptions:launchOptions];
         }
-        if (config.enableUmeng) {
+        if (config.enableUmeng && [AnchorRemoteConfigManager remoteValueJudgeWithKey:WE_R_UMENG]) {
             [AnchorSDK initUMengWithConfig:config];
         }
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActiveNotificationHandle) name:UIApplicationDidBecomeActiveNotification object:nil];
+        
     }
 }
 
@@ -109,11 +113,17 @@ static AnchorConfig *_defaultConfig;
 }
 
 + (void)reportCustomEvent:(NSString *)eventName {
-    [[WEEventManager shareManager] trackEvent:eventName];
+    NSString *key = [NSString stringWithFormat:@"r_%@", eventName];
+    if ([AnchorRemoteConfigManager remoteValueJudgeWithKey:key]) {
+        [[WEEventManager shareManager] trackEvent:eventName];
+    }
 }
 
 + (void)reportCustomEvent:(NSString *)eventName andParams:(NSDictionary *)eventParams {
-    [[WEEventManager shareManager] trackEvent:eventName value:eventParams];
+    NSString *key = [NSString stringWithFormat:@"r_%@", eventName];
+    if ([AnchorRemoteConfigManager remoteValueJudgeWithKey:key]) {
+        [[WEEventManager shareManager] trackEvent:eventName value:eventParams];
+    }
 }
 
 
