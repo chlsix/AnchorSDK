@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) Class remoteConfig;
 
+@property (copy, nonatomic) void(^callbackBlock)(AnchorRemoteConfigManager *manager, BOOL canConnectFireBase);
+
+
 
 + (instancetype)sharedManager;
 

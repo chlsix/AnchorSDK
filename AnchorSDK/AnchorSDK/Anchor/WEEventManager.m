@@ -7,6 +7,8 @@
 //
 
 #import "WEEventManager.h"
+@import Firebase;
+
 
 @implementation WEEventManager
 
@@ -25,12 +27,20 @@
 - (void)initFirebase {
     Class firebaseClass = NSClassFromString(@"FIRApp");
     if (firebaseClass) {
-        SEL configure = NSSelectorFromString(@"configure");
-        if ([firebaseClass respondsToSelector:configure]) {
+        SEL defaultAppSel = NSSelectorFromString(@"defaultApp");
+        if ([firebaseClass respondsToSelector:defaultAppSel]) {
+            IMP imp = [firebaseClass methodForSelector:defaultAppSel];
+            Class (*func)(id, SEL) = (void *)imp;
+            Class firApp = func(firebaseClass, defaultAppSel);
+            if (firApp == nil) {
+                SEL configure = NSSelectorFromString(@"configure");
+                if ([firebaseClass respondsToSelector:configure]) {
+                    IMP imp = [firebaseClass methodForSelector:configure];
+                    void (*func)(id, SEL) = (void *)imp;
+                    func(firebaseClass, configure);
+                }
+            }
             [WEEventManager shareManager].trackApproach |= WEAnalyzeApproachFirebase;
-            IMP imp = [firebaseClass methodForSelector:configure];
-            void (*func)(id, SEL) = (void *)imp;
-            func(firebaseClass, configure);
         }
     }
 }
@@ -274,7 +284,7 @@
                 IMP imp = [appsflyerClass methodForSelector:sharedTrackerSel];
                 Class (*func)(id, SEL) = (void *)imp;
                 Class sharedTracker = func(appsflyerClass, sharedTrackerSel);
-                SEL sel =  NSSelectorFromString(@"trackEvent:withValues");
+                SEL sel = NSSelectorFromString(@"trackEvent:withValues");
                 if ([sharedTracker respondsToSelector:sel]) {
                     IMP imp = [sharedTracker methodForSelector:sel];
                     void (*func)(id, SEL, NSString *, id) = (void *)imp;

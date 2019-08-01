@@ -119,7 +119,7 @@ char* printEnv(void) {
     NSTimeZone *zone = [NSTimeZone systemTimeZone];//获得系统的时区
     NSDate *date = [NSDate date]; //获得时间对象
     NSTimeInterval time = [zone secondsFromGMTForDate:date]; //返回当前时间与系统格林尼治时间的差(以秒为单位)
-    NSString *timeStr = [NSString stringWithFormat:@"%f", time];
+    NSString *timeStr = [NSString stringWithFormat:@"%.0f", time];
     NSLog(@"secondsFromGMTForDate: %@", timeStr);
     return timeStr;
     

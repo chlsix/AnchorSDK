@@ -27,8 +27,21 @@ static dispatch_source_t _timer;
     } else {
         _defaultConfig = config;
     }
-    [[AnchorRemoteConfigManager sharedManager] initRemoteConfig];
+    Class remoteConfigClass = NSClassFromString(@"FIRRemoteConfig");
+    SEL remoteConfigSel = NSSelectorFromString(@"remoteConfig");
+    if ([remoteConfigClass respondsToSelector:remoteConfigSel]) {
+        [[AnchorRemoteConfigManager sharedManager] initRemoteConfig];
+        [AnchorRemoteConfigManager sharedManager].callbackBlock = ^(AnchorRemoteConfigManager * _Nonnull manager, BOOL canConnectFireBase) {
+            NSLog(@"canConnectFireBase: %d", canConnectFireBase);
+            [AnchorSDK commonSetWithConfig:_defaultConfig application:application andLaunchOptions:launchOptions];
+        };
+    } else {
+        [AnchorSDK commonSetWithConfig:_defaultConfig application:application andLaunchOptions:launchOptions];
+    }
    
+}
+
++ (void)commonSetWithConfig:(AnchorConfig *)config application:(UIApplication *)application andLaunchOptions:(NSDictionary *)launchOptions {
     if (config.enableStatistics && [AnchorRemoteConfigManager remoteValueJudgeWithKey:WE_R_ANCHOR]) {
         if (config.enableFirebase && [AnchorRemoteConfigManager remoteValueJudgeWithKey:WE_R_FIREBASE]) {
             [AnchorSDK initFirebase];
@@ -50,24 +63,25 @@ static dispatch_source_t _timer;
 }
 
 + (void)onApplicationDidBecomeActive {
+    NSLog(@"=========onApplicationDidBecomeActive===========");
     [[WEEventManager shareManager] activeTrack];
     
     //打开APP
-    [[WEEventManager shareManager] trackEvent:WE_APP_START];
+    [AnchorSDK reportCustomEvent:WE_APP_START];
     
     //首次打开
     if ([AnchorUtil isFirstInstall]) {
-        [[WEEventManager shareManager] trackEvent:WE_FIRST_INSTALL];
+        [AnchorSDK reportCustomEvent:WE_FIRST_INSTALL];
     }
     
     //是否越狱
     NSString *isJailBreak =  [NSString stringWithFormat:@"%d", [AnchorUtil isJailBreak]];
     NSLog(@"isJailBreak: %@", isJailBreak);
-    [[WEEventManager shareManager] trackEvent:WE_JUDGE value:@{@"description": @"1", @"result":isJailBreak}];
+    [AnchorSDK reportCustomEvent:WE_JUDGE andParams:@{@"description": @"1", @"result":isJailBreak}];
     
     //获取设备设置时区与GMT之前的差值
     NSString *seconds = [AnchorUtil secondsFromGMTForDate];
-    [[WEEventManager shareManager] trackEvent:WE_OFFSET_ACQUIRE value:@{@"value": seconds}];
+    [AnchorSDK reportCustomEvent:WE_OFFSET_ACQUIRE andParams:@{@"value": seconds}];
     
     [AnchorSDK startTimer];
 }
@@ -87,17 +101,21 @@ static dispatch_source_t _timer;
     
     //设置时间间隔
     NSTimeInterval period = 600.f;
+    __block BOOL isFrist = YES;
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     dispatch_source_set_timer(_timer, dispatch_walltime(NULL, 0), period * NSEC_PER_SEC, 0);
     // 事件回调
     dispatch_source_set_event_handler(_timer, ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"time out");
-            //上报
-            [[WEEventManager shareManager] trackEvent:WE_ENGAGEMENT value:@{@"time": @"600"}];
-            //上报一次后更新app进入活跃状态的时间
-            [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:WE_APP_START_TIME];
+            if (isFrist) {
+                isFrist = NO;
+            } else {
+                //上报
+                [AnchorSDK reportCustomEvent:WE_ENGAGEMENT andParams:@{@"time": @"600"}];
+                //上报一次后更新app进入活跃状态的时间
+                [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:WE_APP_START_TIME];
+            }
         });
     });
     
@@ -111,8 +129,8 @@ static dispatch_source_t _timer;
         NSDate *startDate = [[NSUserDefaults standardUserDefaults] valueForKey:WE_APP_START_TIME];
         NSDate *stopDate = [NSDate date];
         NSTimeInterval time = [stopDate timeIntervalSinceDate:startDate];
-        NSString *timeStr = [NSString stringWithFormat:@"%.f", time];
-        [[WEEventManager shareManager] trackEvent:WE_ENGAGEMENT value:@{@"time": timeStr}];
+        NSString *timeStr = [NSString stringWithFormat:@"%.0f", time];
+        [AnchorSDK reportCustomEvent:WE_ENGAGEMENT andParams:@{@"time": timeStr}];
     }
 }
 
