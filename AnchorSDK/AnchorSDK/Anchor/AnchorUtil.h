@@ -7,6 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AnchorLogManager.h"
+
+
+#define AnchorLog(format,...)  [AnchorLogManager customLogWithFunction:__FUNCTION__ lineNumber:__LINE__ formatString:[NSString stringWithFormat:format, ##__VA_ARGS__]]
 
 NS_ASSUME_NONNULL_BEGIN
 

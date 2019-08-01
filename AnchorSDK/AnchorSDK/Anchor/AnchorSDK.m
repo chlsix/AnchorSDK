@@ -11,6 +11,7 @@
 #import "AnchorUtil.h"
 #import "AnchorEventConst.h"
 #import "AnchorRemoteConfigManager.h"
+#import "AnchorLogManager.h"
 
 
 static AnchorConfig *_defaultConfig;
@@ -27,12 +28,12 @@ static dispatch_source_t _timer;
     } else {
         _defaultConfig = config;
     }
+    [AnchorLogManager setLogEnable:_defaultConfig.logEnable];
     Class remoteConfigClass = NSClassFromString(@"FIRRemoteConfig");
     SEL remoteConfigSel = NSSelectorFromString(@"remoteConfig");
     if ([remoteConfigClass respondsToSelector:remoteConfigSel]) {
         [[AnchorRemoteConfigManager sharedManager] initRemoteConfig];
         [AnchorRemoteConfigManager sharedManager].callbackBlock = ^(AnchorRemoteConfigManager * _Nonnull manager, BOOL canConnectFireBase) {
-            NSLog(@"canConnectFireBase: %d", canConnectFireBase);
             [AnchorSDK commonSetWithConfig:_defaultConfig application:application andLaunchOptions:launchOptions];
         };
     } else {
@@ -63,7 +64,6 @@ static dispatch_source_t _timer;
 }
 
 + (void)onApplicationDidBecomeActive {
-    NSLog(@"=========onApplicationDidBecomeActive===========");
     [[WEEventManager shareManager] activeTrack];
     
     //打开APP
@@ -76,7 +76,6 @@ static dispatch_source_t _timer;
     
     //是否越狱
     NSString *isJailBreak =  [NSString stringWithFormat:@"%d", [AnchorUtil isJailBreak]];
-    NSLog(@"isJailBreak: %@", isJailBreak);
     [AnchorSDK reportCustomEvent:WE_JUDGE andParams:@{@"description": @"1", @"result":isJailBreak}];
     
     //获取设备设置时区与GMT之前的差值

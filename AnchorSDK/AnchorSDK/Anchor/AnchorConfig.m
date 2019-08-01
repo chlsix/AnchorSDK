@@ -7,12 +7,15 @@
 //
 
 #import "AnchorConfig.h"
+#import "AnchorLogManager.h"
+
 
 static BOOL _enableStatistics = YES;
 static BOOL _enableFirebase = YES;
 static BOOL _enableFacebook = YES;
 static BOOL _enableAppsFlyer = YES;
 static BOOL _enableUmeng = YES;
+static BOOL _logEnable = NO;
 
 @implementation AnchorConfig
 
@@ -49,6 +52,14 @@ static BOOL _enableUmeng = YES;
 }
 - (void)setEnableUmeng:(BOOL)enableUmeng {
     _enableUmeng = enableUmeng;
+}
+
+- (BOOL )logEnable {
+    return _logEnable;
+}
+
+- (void)setLogEnable:(BOOL )logEnable {
+    _logEnable = logEnable;
 }
 
 @end

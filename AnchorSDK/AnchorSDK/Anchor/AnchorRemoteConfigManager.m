@@ -7,6 +7,8 @@
 //
 
 #import "AnchorRemoteConfigManager.h"
+#import "AnchorUtil.h"
+
 
 static const NSTimeInterval expirationTime = 1000; //remote config配置缓存更新时间
 typedef void (^AnchorFIRRemoteConfigFetchCompletion)(NSInteger status, NSError *__nullable error);
@@ -123,7 +125,7 @@ typedef void (^AnchorFIRRemoteConfigFetchCompletion)(NSInteger status, NSError *
             Class (*func)(id, SEL) = (void *)imp;
             Class source = func(configValue, sourceSel);
             NSInteger sourceInteger = (NSInteger)source;
-//            NSLog(@"key: %@, source: %ld", key, sourceInteger);
+            AnchorLog(@"key: %@, source: %ld", key, sourceInteger);
 //            FIRRemoteConfigSourceRemote,   ///< The data source is the Remote Config service.
 //            FIRRemoteConfigSourceDefault,  ///< The data source is the DefaultConfig defined for this app.
 //            FIRRemoteConfigSourceStatic,   ///< The data doesn't exist, return a static initialized value.

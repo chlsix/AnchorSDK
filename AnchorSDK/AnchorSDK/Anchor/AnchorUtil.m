@@ -61,11 +61,9 @@ const char* jailbreak_tool_pathes[] = {
 + (BOOL)detectJailBreakByJailBreakFileExisted {
     for (int i = 0; i<sizeof(jailbreak_tool_pathes)/sizeof(jailbreak_tool_pathes[0]); i++) {
         if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithUTF8String:jailbreak_tool_pathes[i]]]) {
-            NSLog(@"The device is jail broken!");
             return YES;
         }
     }
-    NSLog(@"The device is NOT jail broken!");
     return NO;
 }
 
@@ -75,10 +73,8 @@ const char* jailbreak_tool_pathes[] = {
  */
 + (BOOL)detectJailBreakByCydiaPathExisted {
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://"]]) {
-        NSLog(@"The device is jail broken!");
         return YES;
     }
-    NSLog(@"The device is NOT jail broken!");
     return NO;
 }
 
@@ -89,12 +85,8 @@ const char* jailbreak_tool_pathes[] = {
 #define USER_APP_PATH                 @"/User/Applications/"
 + (BOOL)detectJailBreakByAppPathExisted {
     if ([[NSFileManager defaultManager] fileExistsAtPath:USER_APP_PATH]) {
-        NSLog(@"The device is jail broken!");
-        NSArray *applist = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:USER_APP_PATH error:nil];
-        NSLog(@"applist = %@", applist);
         return YES;
     }
-    NSLog(@"The device is NOT jail broken!");
     return NO;
 }
 
@@ -108,10 +100,8 @@ char* printEnv(void) {
 
 + (BOOL)detectJailBreakByEnvironmentExisted {
     if (printEnv()) {
-        NSLog(@"The device is jail broken!");
         return YES;
     }
-    NSLog(@"The device is NOT jail broken!");
     return NO;
 }
 
@@ -120,7 +110,7 @@ char* printEnv(void) {
     NSDate *date = [NSDate date]; //获得时间对象
     NSTimeInterval time = [zone secondsFromGMTForDate:date]; //返回当前时间与系统格林尼治时间的差(以秒为单位)
     NSString *timeStr = [NSString stringWithFormat:@"%.0f", time];
-    NSLog(@"secondsFromGMTForDate: %@", timeStr);
+    AnchorLog(@"secondsFromGMTForDate: %@", timeStr);
     return timeStr;
     
 }

@@ -30,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 //Umeng AppKey
 @property (nonatomic, strong) NSString *appKeyForUmeng;
 
+//开启打印日志 默认为NO
+@property (nonatomic, assign) BOOL logEnable;
+
 @end
 
 NS_ASSUME_NONNULL_END
