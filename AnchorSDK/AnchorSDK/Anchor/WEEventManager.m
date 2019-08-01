@@ -7,7 +7,6 @@
 //
 
 #import "WEEventManager.h"
-@import Firebase;
 
 
 @implementation WEEventManager
