@@ -90,11 +90,11 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "AnchorSDK", "Anchor.framework/Headers/*.{h}"
+  spec.source_files  = "AnchorSDK", "AnchorSDK.framework/Headers/*.{h}"
 
-  spec.vendored_frameworks = "Anchor.framework"
+  spec.vendored_frameworks = "AnchorSDK.framework"
 
-  spec.public_header_files = "Anchor.framework/Headers/AnchorSDK.h"
+  spec.public_header_files = "AnchorSDK.framework/Headers/AnchorSDK.h"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

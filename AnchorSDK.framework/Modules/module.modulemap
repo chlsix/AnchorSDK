@@ -1,0 +1,6 @@
+framework module AnchorSDK {
+  umbrella header "AnchorSDK.h"
+
+  export *
+  module * { export * }
+}
