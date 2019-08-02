@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "AnchorSDK"
-  spec.version      = "1.0.2"
+  spec.version      = "1.0.0"
   spec.summary      = "Anchor SDK"
 
   # This description is used to generate tags and improve search results.
@@ -24,9 +24,8 @@ Pod::Spec.new do |spec|
   #   * Try to keep it short, snappy and to the point.
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
-  spec.description  = <<-DESC
-                        AnchorSDK 1.0.2
-                   DESC
+  # spec.description  = <<-DESC
+  #                  DESC
 
   spec.homepage     = "https://github.com/chlsix/AnchorSDK"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
@@ -39,7 +38,7 @@ Pod::Spec.new do |spec|
   #  Popular ones are 'MIT', 'BSD' and 'Apache License, Version 2.0'.
   #
 
-  spec.license      = { :type => "MIT" }
+  spec.license      = "MIT"
   # spec.license      = { :type => "MIT", :file => "FILE_LICENSE" }
 
 
@@ -65,7 +64,7 @@ Pod::Spec.new do |spec|
   #
 
   # spec.platform     = :ios
-  spec.platform     = :ios, "10.0"
+  # spec.platform     = :ios, "5.0"
 
   #  When using multiple platforms
   # spec.ios.deployment_target = "5.0"
@@ -91,10 +90,11 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "AnchorSDK", "AnchorSDK/AnchorSDK/Anchor/*.{h,m}"
-  # spec.exclude_files = "Classes/Exclude"
+  spec.source_files  = "AnchorSDK", "Anchor.framework/Headers/*.{h}"
 
-  # spec.public_header_files = "Classes/**/*.h"
+  spec.vendored_frameworks = "Anchor.framework"
+
+  spec.public_header_files = "Anchor.framework/Headers/AnchorSDK.h"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
