@@ -14,13 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 //是否允许上报 默认为YES
 @property (nonatomic, assign) BOOL enableStatistics;
-//打开Firebase统计 默认为NO
+//打开Firebase统计 默认为YES, 需要上报时导入Firebase SDK
 @property (nonatomic, assign) BOOL enableFirebase;
-//打开Facebook统计 默认为NO
+//打开Facebook统计 默认为YES, 需要上报时导入Facebook SDK
 @property (nonatomic, assign) BOOL enableFacebook;
-//打开AppsFlyer统计 默认为NO
+//打开AppsFlyer统计 默认为YES, 需要上报时导入AppsFlyer SDK
 @property (nonatomic, assign) BOOL enableAppsFlyer;
-//打开友盟统计 默认为NO
+//打开Umeng统计 默认为YES, 需要上报时导入Umeng SDK
 @property (nonatomic, assign) BOOL enableUmeng;
 
 //AppsFlyer AppKey

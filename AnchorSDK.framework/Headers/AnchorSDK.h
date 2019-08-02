@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
  @params eventParams 事件参数
  */
 + (void)reportCustomEvent:(NSString *)eventName
-                andParams:(NSDictionary *)eventParams;
+                    value:(NSDictionary *)eventParams;
 
 /**
  注册成功时调用
