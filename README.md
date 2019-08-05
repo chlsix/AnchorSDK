@@ -65,7 +65,11 @@ pod 'UMCAnalytics'
 @property (nonatomic, assign) BOOL enableUmeng;
 //开启打印日志 默认为NO
 @property (nonatomic, assign) BOOL logEnable;
+//开启DEBUG状态下不上报 默认为NO
+@property (nonatomic, assign) BOOL debugEnable;
+```
 初始化时修改AnchorConfig的相关属性来控制
+```
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
@@ -79,6 +83,8 @@ pod 'UMCAnalytics'
     config.enableAppsFlyer = YES;//开启AppsFlyer平台事件上报
     config.enableUmeng = YES;//开启Umeng平台事件上报
     config.logEnable = YES;//开启打印日志
+    config.debugEnable = YES;//开启DEBUG模式不上报事件
+
     [AnchorSDK initWithConfig:config application:application andLaunchOptions:launchOptions];
     return YES;
 }
