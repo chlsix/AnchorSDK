@@ -22,6 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL enableAppsFlyer;
 //打开Umeng统计 默认为YES, 需要上报时导入Umeng SDK
 @property (nonatomic, assign) BOOL enableUmeng;
+//开启打印日志 默认为NO
+@property (nonatomic, assign) BOOL logEnable;
+//开启DEBUG状态下不上报 默认为NO
+@property (nonatomic, assign) BOOL debugEnable;
 
 //AppsFlyer AppKey
 @property (nonatomic, strong) NSString *appKeyForAppsFlyer;
@@ -30,8 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 //Umeng AppKey
 @property (nonatomic, strong) NSString *appKeyForUmeng;
 
-//开启打印日志 默认为NO
-@property (nonatomic, assign) BOOL logEnable;
+
 
 @end
 

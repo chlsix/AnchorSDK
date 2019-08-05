@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param target 订单id 没有传nil
  */
 + (void)reportPurchaseRequest:(NSString *)productId
-                        value:(float)value
+                        value:(NSString *)value
                        target:(nullable NSString *)target;
 
 /**
@@ -93,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param target 订单id 没有传nil
  */
 + (void)reportPurchaseSuccess:(NSString *)productId
-                        value:(float)value
+                        value:(NSString *)value
                        target:(nullable NSString *)target;
 
 /**
@@ -103,7 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param target 订单id 没有传nil
  */
 + (void)reportPurchaseCancel:(NSString *)productId
-                       value:(float)value
+                       value:(NSString *)value
                       target:(nullable NSString *)target;
 
 /**
@@ -114,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param description 订单id 没有传nil
  */
 + (void)reportPurchaseFailed:(NSString *)productId
-                       value:(float)value
+                       value:(NSString *)value
                       target:(nullable NSString *)target
                  description:(NSString *)description;
 
@@ -126,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param target 订单id 没有传nil
  */
 + (void)reportSubRequest:(NSString *)productId
-                   value:(float)value
+                   value:(NSString *)value
                   target:(nullable NSString *)target;
 
 /**
@@ -136,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param target 订单id 没有传nil
  */
 + (void)reportSubSuccess:(NSString *)productId
-                   value:(float)value
+                   value:(NSString *)value
                   target:(nullable NSString *)target;
 
 /**
@@ -146,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param target 订单id 没有传nil
  */
 + (void)reportSubCancel:(NSString *)productId
-                  value:(float)value
+                  value:(NSString *)value
                  target:(nullable NSString *)target;
 
 /**
@@ -157,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param description 订单id 没有传nil
  */
 + (void)reportSubFailed:(NSString *)productId
-                  value:(float)value
+                  value:(NSString *)value
                  target:(nullable NSString *)target
             description:(NSString *)description;
 
