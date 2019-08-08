@@ -5,7 +5,7 @@
 //  Created by chenlei on 2019/7/29.
 //  Copyright © 2019 webeye. All rights reserved.
 //
-
+//v1.0.2
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "AnchorConfig.h"
