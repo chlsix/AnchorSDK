@@ -166,24 +166,20 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  广告触发
  @param itemId 进行广告请求的场景id
- @param description 广告请求的场景描述
  @param result 触发广告的结果，1成功，0失败，2开始请求
  */
 + (void)reportADTrigger:(NSString *)itemId
-            description:(NSString *)description
-                 result:(NSString *)result;
+                  result:(NSString *)result;
 
 /**
  广告请求 （暂时关闭上报）
  @param itemId 进行广告请求的场景id
- @param description 广告请求的场景描述
  @param type 广告类型 0：banner 1：插屏（interstial）2：激励视频（rewarded） 3：原生广告（native） 4：unknown 5：开屏（splash）6：信息流（Feed List）7：互动广告（巨掌、推啊、豆盟）
  @param ecpm 广告的ecpm的底线值，直接乘以国家系数，上报真实ecpm
  @param sdkName 广告的平台名称，只传代码
  @param pid 广告unitid，只要id，不要名字，不能出现中文字符串
  */
 + (void)reportADRequest:(NSString *)itemId
-            description:(NSString *)description
                    type:(NSString *)type
                    ecpm:(NSString *)ecpm
                 sdkName:(NSString *)sdkName
@@ -192,14 +188,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  广告填充
  @param itemId 进行广告请求的场景id
- @param description 广告请求的场景描述
  @param type 广告类型 0：banner 1：插屏（interstial）2：激励视频（rewarded） 3：原生广告（native） 4：unknown 5：开屏（splash）6：信息流（Feed List）7：互动广告（巨掌、推啊、豆盟）
  @param ecpm 广告的ecpm的底线值，直接乘以国家系数，上报真实ecpm
  @param sdkName 广告的平台名称，只传代码
  @param pid 广告unitid，只要id，不要名字，不能出现中文字符串
  */
 + (void)reportADFill:(NSString *)itemId
-         description:(NSString *)description
                 type:(NSString *)type
                 ecpm:(NSString *)ecpm
              sdkName:(NSString *)sdkName
@@ -208,14 +202,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  客户端展示广告
  @param itemId 进行广告请求的场景id
- @param description 广告请求的场景描述
  @param type 广告类型 0：banner 1：插屏（interstial）2：激励视频（rewarded） 3：原生广告（native） 4：unknown 5：开屏（splash）6：信息流（Feed List）7：互动广告（巨掌、推啊、豆盟）
  @param ecpm 广告的ecpm的底线值，直接乘以国家系数，上报真实ecpm
  @param sdkName 广告的平台名称，只传代码
  @param pid 广告unitid，只要id，不要名字，不能出现中文字符串
  */
 + (void)reportADShow:(NSString *)itemId
-         description:(NSString *)description
                 type:(NSString *)type
                 ecpm:(NSString *)ecpm
              sdkName:(NSString *)sdkName
@@ -224,7 +216,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  平台确认展示广告
  @param itemId 进行广告请求的场景id
- @param description 广告请求的场景描述
  @param type 广告类型 0：banner 1：插屏（interstial）2：激励视频（rewarded） 3：原生广告（native） 4：unknown 5：开屏（splash）6：信息流（Feed List）7：互动广告（巨掌、推啊、豆盟）
  @param ecpm 广告的ecpm的底线值，直接乘以国家系数，上报真实ecpm
  @param sdkName 广告的平台名称，只传代码
@@ -233,7 +224,6 @@ NS_ASSUME_NONNULL_BEGIN
  @param currency 开白名单的mopub集成平台，上传返回的currency字段
  */
 + (void)reportADImp:(NSString *)itemId
-        description:(NSString *)description
                type:(NSString *)type
                ecpm:(NSString *)ecpm
             sdkName:(NSString *)sdkName
@@ -244,14 +234,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  广告视频看完（只有激励视频有）
  @param itemId 进行广告请求的场景id
- @param description 广告请求的场景描述
  @param type 2：激励视频（rewarded）
  @param ecpm 广告的ecpm的底线值，直接乘以国家系数，上报真实ecpm
  @param sdkName 广告的平台名称，只传代码
  @param pid 广告unitid，只要id，不要名字，不能出现中文字符串
  */
 + (void)reportADReward:(NSString *)itemId
-           description:(NSString *)description
                   type:(NSString *)type
                   ecpm:(NSString *)ecpm
                sdkName:(NSString *)sdkName
@@ -260,14 +248,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  广告被点击
  @param itemId 进行广告请求的场景id
- @param description 广告请求的场景描述
  @param type 广告类型 0：banner 1：插屏（interstial）2：激励视频（rewarded） 3：原生广告（native） 4：unknown 5：开屏（splash）6：信息流（Feed List）7：互动广告（巨掌、推啊、豆盟）
  @param ecpm 广告的ecpm的底线值，直接乘以国家系数，上报真实ecpm
  @param sdkName 广告的平台名称，只传代码
  @param pid 广告unitid，只要id，不要名字，不能出现中文字符串
  */
 + (void)reportADClick:(NSString *)itemId
-          description:(NSString *)description
                  type:(NSString *)type
                  ecpm:(NSString *)ecpm
               sdkName:(NSString *)sdkName
@@ -276,14 +262,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  广告关闭
  @param itemId 进行广告请求的场景id
- @param description 广告请求的场景描述
  @param type 广告类型 0：banner 1：插屏（interstial）2：激励视频（rewarded） 3：原生广告（native） 4：unknown 5：开屏（splash）6：信息流（Feed List）7：互动广告（巨掌、推啊、豆盟）
  @param ecpm 广告的ecpm的底线值，直接乘以国家系数，上报真实ecpm
  @param sdkName 广告的平台名称，只传代码
  @param pid 广告unitid，只要id，不要名字，不能出现中文字符串
  */
 + (void)reportADClose:(NSString *)itemId
-          description:(NSString *)description
                  type:(NSString *)type
                  ecpm:(NSString *)ecpm
               sdkName:(NSString *)sdkName
@@ -292,12 +276,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  用户获得广告激励
  @param itemId 进行广告请求的场景id
- @param description 广告请求的场景描述
  @param itemType 用户获取奖励的类别 比如获得了金币 coin
  @param value 用户获取奖励的值 10
  */
 + (void)reportUserADReward:(NSString *)itemId
-               description:(NSString *)description
                   itemType:(NSString *)itemType
                      value:(NSString *)value;
 
