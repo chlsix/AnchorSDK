@@ -1,5 +1,5 @@
-framework module AnchorFramework {
-  umbrella header "AnchorFramework.h"
+framework module AnchorSDK {
+  umbrella header "AnchorSDK.h"
 
   export *
   module * { export * }
